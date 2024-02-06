@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\ApartmentBooking.Application\ApartmentBooking.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ApartmentBooking.Infrastructure\ApartmentBooking.Infrastructure.csproj" />
   </ItemGroup>

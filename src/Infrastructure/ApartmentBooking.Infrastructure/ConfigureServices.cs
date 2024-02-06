@@ -17,6 +17,7 @@ namespace ApartmentBooking.Infrastructure
             });
 
             services.AddScoped<ICommandUnitOfWork, CommandUnitOfWork>();
+            services.AddScoped<IQueryUnitOfWork, QueryUnitOfWork>();
         }
     }
 }
