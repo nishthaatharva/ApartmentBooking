@@ -1,5 +1,9 @@
-﻿using ApartmentBooking.Application.Features.Apartments.Commands;
+﻿using ApartmentBooking.Application.Contracts.Responses;
+using ApartmentBooking.Application.Features.Apartments.Commands;
+using ApartmentBooking.Application.Features.Apartments.Dtos;
+using ApartmentBooking.Application.Features.Apartments.Queries;
 using ApartmentBooking.Application.Features.Common;
+using ApartmentBooking.Application.Model.Specification.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -18,6 +22,12 @@ namespace ApartmentBooking.API.Controllers
             return await _mediator.Send(request);
         }
 
+        [HttpPost("Search")]
+        public async Task<IPagedDataResponse<ApartmentListDto>> SearchAsync(PaginationFilter request)
+        {
+            return await _mediator.Send(new SearchApartmentQueryRequest() { PaginationFilter = request });
+        }
+
         [HttpPut("{id}")]
         public async Task<ApiResponse<string>> UpdateApartment(Guid id, UpdateApartmentCommandRequest request)
         {
@@ -33,5 +43,16 @@ namespace ApartmentBooking.API.Controllers
             return await _mediator.Send(request);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ApiResponse<string>> DeleteApartment(Guid id)
+        {
+            return await _mediator.Send(new DeleteApartmentCommandRequest(id));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ApiResponse<ApartmentDetailsDto>> GetApartmentDetails(Guid id)
+        {
+            return await _mediator.Send(new GetApartmentDetailsQueryRequest(id));
+        }
     }
 }

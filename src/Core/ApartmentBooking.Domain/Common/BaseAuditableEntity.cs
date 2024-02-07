@@ -1,6 +1,8 @@
-﻿namespace ApartmentBooking.Domain.Common
+﻿using ApartmentBooking.Domain.Common.Contracts;
+
+namespace ApartmentBooking.Domain.Common
 {
-    public abstract class BaseAuditableEntity : BaseEntity
+    public abstract class BaseAuditableEntity : BaseEntity, IAuditableEntity, ISoftDelete
     {
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public string? CreatedBy { get; set; }

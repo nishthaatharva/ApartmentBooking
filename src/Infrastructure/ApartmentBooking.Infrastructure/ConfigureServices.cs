@@ -1,5 +1,6 @@
 ﻿using ApartmentBooking.Application.UnitOfWork;
 using ApartmentBooking.Infrastructure.Data;
+using ApartmentBooking.Infrastructure.Interceptors;
 using ApartmentBooking.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,8 +12,13 @@ namespace ApartmentBooking.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DataContext>(options =>
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            services.AddDbContext<DataContext>((sp, options) =>
             {
+                options.AddInterceptors(
+                   sp.GetRequiredService<AuditableEntitySaveChangesInterceptor>()
+               );
+
                 options.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
             });
 

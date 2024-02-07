@@ -31,7 +31,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
             {
                 foreach(var existingAmenities in apartment.ApartmentAmenitiesAssociations)
                 {
-                    if(!request.apartment.ApartmentAmenitiesAssociations.Any(a => new Guid(a) == existingAmenities.Id))
+                    if(!request.apartment.ApartmentAmenitiesAssociation!.Any(a => new Guid(a) == existingAmenities.AmenitiesId))
                     {
                         apartment.ApartmentAmenitiesAssociations.Remove(existingAmenities);
                         removeAmenities.Add(existingAmenities);
@@ -50,7 +50,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
                 apartment.ApartmentAmenitiesAssociations = new List<ApartmentAmenitiesAssociation>();
             }
 
-            foreach(var item in request.apartment.ApartmentAmenitiesAssociations)
+            foreach(var item in request.apartment.ApartmentAmenitiesAssociation)
             {
                 if(!apartment.ApartmentAmenitiesAssociations.Any(x => x.AmenitiesId == new Guid(item)))
                 {
@@ -74,5 +74,4 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
             return response;
         }
     }
-
 }

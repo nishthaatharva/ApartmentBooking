@@ -1,7 +1,9 @@
-﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
+﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
+using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
 using ApartmentBooking.Application.UnitOfWork;
 using ApartmentBooking.Domain.Common;
 using ApartmentBooking.Infrastructure.Data;
+using ApartmentBooking.Infrastructure.Repositories.Apartments;
 using ApartmentBooking.Infrastructure.Repositories.Base;
 using System.Collections;
 
@@ -37,6 +39,9 @@ namespace ApartmentBooking.Infrastructure.UnitOfWork
             return (IQueryRepository<TEntity>)_repositories[type] ?? new QueryRepository<TEntity>(_context);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         }
+
+        public ApartmentQueryRepository _apartmentRepository;
+        public IApartmentQueryRepository ApartmentQuery => _apartmentRepository ?? new ApartmentQueryRepository(_context);
 
         public void Dispose()
         {

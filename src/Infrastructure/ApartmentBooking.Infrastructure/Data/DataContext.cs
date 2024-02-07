@@ -1,15 +1,23 @@
-﻿using ApartmentBooking.Domain.Entities;
+﻿using ApartmentBooking.Domain.Common.Contracts;
+using ApartmentBooking.Domain.Entities;
+using ApartmentBooking.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace ApartmentBooking.Infrastructure.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+        public DataContext(DbContextOptions<DataContext> options,
+            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options) 
+        {
+            _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         }
 
         public DbSet<Apartment> Apartments => Set<Apartment>();
@@ -18,6 +26,10 @@ namespace ApartmentBooking.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.AppendGlobalQueryFilter<ISoftDelete>(s => s.IsDeleted == false);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
             base.OnModelCreating(modelBuilder);
 
             // Seed Amenities data

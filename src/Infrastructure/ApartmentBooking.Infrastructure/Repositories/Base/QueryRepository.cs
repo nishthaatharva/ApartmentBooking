@@ -8,7 +8,7 @@ namespace ApartmentBooking.Infrastructure.Repositories.Base
 {
     public class QueryRepository<T>(DataContext context) : IQueryRepository<T> where T : BaseEntity, new()
     {
-        private readonly DataContext _context = context;
+        protected readonly DataContext _context = context;
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
