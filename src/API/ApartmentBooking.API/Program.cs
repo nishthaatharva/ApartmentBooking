@@ -1,5 +1,7 @@
 using ApartmentBooking.Infrastructure;
 using ApartmentBooking.Application;
+using ApartmentBooking.Identity;
+using ApartmentBooking.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddIdentityService(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,5 +29,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await app.Services.InitialiseDatabaseAsync();
 
 app.Run();
