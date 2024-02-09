@@ -3,11 +3,13 @@ using ApartmentBooking.Application.Contracts.Responses;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Application.Model.Authentication;
 using ApartmentBooking.Identity.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,11 +19,15 @@ namespace ApartmentBooking.Identity.Services
     public class AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
+        IAuthorizationService authorizationService,
+        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
         IOptions<JwtSettings> jwtSettings) : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
         private readonly JwtSettings _jwtSettings = jwtSettings.Value;
+        private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
+        private readonly IAuthorizationService _authorizationService = authorizationService;
 
         #region Public methods
         public async Task<IResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -60,6 +66,90 @@ namespace ApartmentBooking.Identity.Services
                 Success = true,
                 Message = "Logged in successfully."
             };
+        }
+
+        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        {
+            var existingUser = await _userManager.FindByEmailAsync(request.Email);
+            if (existingUser != null)
+            {
+                throw new Exception($"Email {request.Email} already exists.");
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.Email,
+                EmailConfirmed = true
+            };
+
+            if (existingUser == null)
+            {
+                var results = await _userManager.CreateAsync(user, request.Password);
+
+                if (results.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, Constants.IdentityRole.User);
+                    return new RegistrationResponse() { UserId = user.Id };
+                }
+                else
+                {
+                    throw new Exception($"{string.Join(",", results.Errors.Select(p => p.Description))}");
+                }
+            }
+            else
+            {
+                throw new Exception($"Email {request.Email} already exists.");
+            }
+        }
+
+        public async Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            var userPrincipal = GetPrincipalFromExpiredToken(request.Token);
+            string? userEmail = userPrincipal?.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                throw new AuthenticationException("Authentication Failed.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            _ = user ?? throw new Exception($"User {userEmail} not found.");
+
+            if (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                throw new AuthenticationException("Invalid Refresh Token.");
+            }
+
+            JwtSecurityToken jwtSecurityToken = await GenerateToken(user!);
+
+            if (string.IsNullOrEmpty(user.RefreshToken) || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                user.RefreshToken = GenerateRefreshToken();
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
+                await _userManager.UpdateAsync(user);
+            }
+
+            return new RefreshTokenResponse(new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), user.RefreshToken, user.RefreshTokenExpiryTime);
+        }
+
+        public async Task<bool> AuthorizeAsync(string userId, string policyName)
+        {
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+
+            var result = await _authorizationService.AuthorizeAsync(principal, policyName);
+
+            return result.Succeeded;
         }
 
         #endregion
@@ -108,6 +198,31 @@ namespace ApartmentBooking.Identity.Services
             using RandomNumberGenerator randomNumber = RandomNumberGenerator.Create();
             randomNumber.GetBytes(numbers);
             return Convert.ToBase64String(numbers);
+        }
+
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                RoleClaimType = ClaimTypes.Role,
+                ClockSkew = TimeSpan.Zero,
+                ValidateLifetime = false
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(
+                    SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new UnauthorizedAccessException("Invalid Token.");
+            }
+
+            return principal;
         }
 
         #endregion

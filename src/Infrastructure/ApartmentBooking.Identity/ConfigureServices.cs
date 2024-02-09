@@ -1,7 +1,10 @@
 ﻿using ApartmentBooking.Application.Model.Authentication;
+using ApartmentBooking.Identity.Authorization.Permissions;
 using ApartmentBooking.Identity.Data;
+using ApartmentBooking.Identity.Interceptors;
 using ApartmentBooking.Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,15 +20,21 @@ namespace ApartmentBooking.Identity
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            services.AddDbContext<AppIdentityDbContext>((options) =>
+            services.AddDbContext<AppIdentityDbContext>((sp, options) =>
             {
+                options.AddInterceptors(sp.GetRequiredService<AuditableEntitySaveChangesInterceptor>());
 
                 options.UseSqlServer(configuration.GetConnectionString("SqlConnection"),
                     b => b.MigrationsAssembly(typeof(AppIdentityDbContext).Assembly.FullName));
             });
 
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddScoped<AppIdentityDbContextInitialiser>();
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+                .AddScoped<IAuthorizationHandler, PermissionAuthorizaionHandler>();
+           
 
             services.AddAuthentication(options =>
             {

@@ -16,5 +16,17 @@ namespace ApartmentBooking.API.Controllers
         {
             return await _authService.AuthenticateAsync(request);
         }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegistrationRequest request)
+        {
+            return Ok(await _authService.RegisterAsync(request));
+        }
+
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            return Ok(await _authService.RefreshTokenAsync(request));
+        }
     }
 }
