@@ -7,5 +7,7 @@
         public const string UserRoles = nameof(UserRoles);
         public const string Roles = nameof(Roles);
         public const string RoleClaims = nameof(RoleClaims);
+        public const string Apartment = nameof(Apartment);
+        public const string Booking = nameof(Booking);
     }
 }

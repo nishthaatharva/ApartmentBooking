@@ -12,6 +12,6 @@ namespace ApartmentBooking.Application.Contracts.Identity
         Task<ApiResponse<UserDetailsDto>> GetUserDetails(string userId, CancellationToken cancellationToken);
         Task<IPagedDataResponse<UserListDto>> SearchAsync(UserListFilter flter, CancellationToken cancellationToken);
         Task<List<string>> GetPermissionAsync(string userId, CancellationToken cancellationToken);
-        Task<bool> HasPermissionAsync(string? userId, string permission, CancellationToken cancellationToken);
+        Task<bool> HasPermissionAsync(string? userId, string permission, CancellationToken cancellationToken = default);
     }
 }

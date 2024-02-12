@@ -1,12 +1,15 @@
-﻿using ApartmentBooking.Domain.Common;
+﻿using ApartmentBooking.Application.Contracts.Application;
+using ApartmentBooking.Domain.Common;
 using ApartmentBooking.Domain.Common.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace ApartmentBooking.Infrastructure.Interceptors
 {
-    public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
+    public class AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
     {
+        private readonly ICurrentUserService _currentUserService = currentUserService;
+
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
             UpdateEntities(eventData.Context);
@@ -30,11 +33,13 @@ namespace ApartmentBooking.Infrastructure.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
+                    entry.Entity.CreatedBy = _currentUserService.UserId;
                     entry.Entity.CreatedOn = now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
+                    entry.Entity.ModifiedBy = _currentUserService.UserId;
                     entry.Entity.ModifiedOn = now;
                 }
 
@@ -43,6 +48,7 @@ namespace ApartmentBooking.Infrastructure.Interceptors
                     if (entry.Entity is ISoftDelete softDelete)
                     {
                         softDelete.IsDeleted = true;
+                        softDelete.DeletedBy = _currentUserService.UserId;
                         softDelete.DeletedOn = now;
                         entry.State = EntityState.Modified;
                     }

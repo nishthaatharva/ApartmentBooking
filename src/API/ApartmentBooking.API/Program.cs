@@ -1,35 +1,23 @@
-using ApartmentBooking.Infrastructure;
-using ApartmentBooking.Application;
-using ApartmentBooking.Identity;
+
 using ApartmentBooking.Identity.Data;
+using ApartmentBooking.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddIdentityService(builder.Configuration);
 
-var app = builder.Build();
+
+
+var app = builder
+    .ConfigureServices()
+    .ConfigurePipeline();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 await app.Services.InitialiseDatabaseAsync();
 
 app.Run();
+
+

@@ -71,7 +71,7 @@ namespace ApartmentBooking.Identity
 
                              return Task.CompletedTask;
                          },
-                         OnForbidden = _ => throw new Exception("You are not authorized to access this resource."),
+                         OnForbidden = _ =>     throw new Exception("You are not authorized to access this resource."),
                      };
                  });
         }

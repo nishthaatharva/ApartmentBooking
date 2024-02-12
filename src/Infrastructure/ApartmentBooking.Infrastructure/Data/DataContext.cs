@@ -23,6 +23,7 @@ namespace ApartmentBooking.Infrastructure.Data
         public DbSet<Apartment> Apartments => Set<Apartment>();
         public DbSet<Amenities> Amenities => Set<Amenities>();
         public DbSet<ApartmentAmenitiesAssociation> ApartmentAmenitiesAssociations => Set<ApartmentAmenitiesAssociation>();
+        public DbSet<Booking> Bookings => Set<Booking>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

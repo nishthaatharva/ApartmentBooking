@@ -2,8 +2,12 @@
 using ApartmentBooking.Application.Contracts.Responses;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Application.Model.Users;
+using ApartmentBooking.Identity.Authorization;
+using ApartmentBooking.Identity.Authorization.Permissions;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Action = ApartmentBooking.Identity.Authorization.Action;
+
 
 namespace ApartmentBooking.API.Controllers
 {
@@ -14,12 +18,14 @@ namespace ApartmentBooking.API.Controllers
         private readonly IUsersService _usersService = userService;
 
         [HttpPost("Search")]
+        [MustHavePermission(Action.Search, Resource.Users)]
         public async Task<IPagedDataResponse<UserListDto>> GetSearchAsync(UserListFilter filter, CancellationToken cancellationToken)
         {
             return await _usersService.SearchAsync(filter, cancellationToken);
         }
 
-        [HttpPut("{id}")] 
+        [HttpPut("{id}")]
+        [MustHavePermission(Action.Update, Resource.Users)]
         public async Task<ApiResponse<string>> UpdateAsync(string id, UpdateUserDto request)
         {
             if(id != request.Id)
@@ -35,12 +41,14 @@ namespace ApartmentBooking.API.Controllers
         }
 
         [HttpDelete("{userId}")]
+        [MustHavePermission(Action.Delete, Resource.Users)]
         public async Task<ApiResponse<string>> DeleteAsync(string userId)
         {
             return await _usersService.DeleteAsync(userId);
         }
 
         [HttpGet("{id}")]
+        [MustHavePermission(Action.View, Resource.Users)]
         public async Task<ApiResponse<UserDetailsDto>> GetUserDetails(string id, CancellationToken cancellationToken)
         {
             return await _usersService.GetUserDetails(id, cancellationToken);

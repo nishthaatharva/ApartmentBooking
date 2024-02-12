@@ -4,6 +4,7 @@ using ApartmentBooking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApartmentBooking.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240212082653_initial_booking")]
+    partial class initial_booking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,28 +64,28 @@ namespace ApartmentBooking.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("d0f230c1-a0bd-4085-7239-08dc02176302"),
-                            CreatedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1794),
-                            DeletedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1798),
+                            CreatedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(442),
+                            DeletedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(446),
                             IsDeleted = false,
-                            ModifiedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1797),
+                            ModifiedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(445),
                             Name = "Gym"
                         },
                         new
                         {
                             Id = new Guid("7984dce3-39a8-4da3-bfac-08dc103b5c3f"),
-                            CreatedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1814),
-                            DeletedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1815),
+                            CreatedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(463),
+                            DeletedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(464),
                             IsDeleted = false,
-                            ModifiedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1814),
+                            ModifiedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(463),
                             Name = "Pool"
                         },
                         new
                         {
                             Id = new Guid("70edb255-7bf7-4597-d02c-08dc10d6610e"),
-                            CreatedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1817),
-                            DeletedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1817),
+                            CreatedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(467),
+                            DeletedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(468),
                             IsDeleted = false,
-                            ModifiedOn = new DateTime(2024, 2, 12, 12, 38, 7, 350, DateTimeKind.Utc).AddTicks(1817),
+                            ModifiedOn = new DateTime(2024, 2, 12, 8, 26, 52, 131, DateTimeKind.Utc).AddTicks(467),
                             Name = "Garden"
                         });
                 });
@@ -210,9 +213,6 @@ namespace ApartmentBooking.Infrastructure.Migrations
 
                     b.Property<bool>("IsOnLease")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("LeaseDuration")
-                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");

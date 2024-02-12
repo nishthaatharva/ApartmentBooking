@@ -4,9 +4,12 @@ using ApartmentBooking.Application.Features.Apartments.Dtos;
 using ApartmentBooking.Application.Features.Apartments.Queries;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Application.Model.Specification.Filters;
+using ApartmentBooking.Identity.Authorization.Permissions;
+using ApartmentBooking.Identity.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Action = ApartmentBooking.Identity.Authorization.Action;
 
 namespace ApartmentBooking.API.Controllers
 {
@@ -17,18 +20,21 @@ namespace ApartmentBooking.API.Controllers
         private readonly IMediator _mediator = mediator;
 
         [HttpPost("Create")]
+        [MustHavePermission(Action.Create, Resource.Apartment)]
         public async Task<ApiResponse<string>> CreateApartment(CreateApartmentCommandRequest request)
         {
             return await _mediator.Send(request);
         }
 
         [HttpPost("Search")]
+        [MustHavePermission(Action.Search, Resource.Apartment)]
         public async Task<IPagedDataResponse<ApartmentListDto>> SearchAsync(PaginationFilter request)
         {
             return await _mediator.Send(new SearchApartmentQueryRequest() { PaginationFilter = request });
         }
 
         [HttpPut("{id}")]
+        [MustHavePermission(Action.Update, Resource.Apartment)]
         public async Task<ApiResponse<string>> UpdateApartment(Guid id, UpdateApartmentCommandRequest request)
         {
             if (id != request.apartment.Id)
@@ -44,12 +50,14 @@ namespace ApartmentBooking.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [MustHavePermission(Action.Delete, Resource.Apartment)]
         public async Task<ApiResponse<string>> DeleteApartment(Guid id)
         {
             return await _mediator.Send(new DeleteApartmentCommandRequest(id));
         }
 
         [HttpGet("{id}")]
+        [MustHavePermission(Action.View, Resource.Apartment)]
         public async Task<ApiResponse<ApartmentDetailsDto>> GetApartmentDetails(Guid id)
         {
             return await _mediator.Send(new GetApartmentDetailsQueryRequest(id));

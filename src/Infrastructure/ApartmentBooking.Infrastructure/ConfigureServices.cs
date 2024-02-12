@@ -1,5 +1,6 @@
 ﻿using ApartmentBooking.Application.Interfaces;
 using ApartmentBooking.Application.UnitOfWork;
+using ApartmentBooking.Infrastructure.Caching;
 using ApartmentBooking.Infrastructure.Data;
 using ApartmentBooking.Infrastructure.Interceptors;
 using ApartmentBooking.Infrastructure.UnitOfWork;
@@ -15,6 +16,7 @@ namespace ApartmentBooking.Infrastructure
         {
             services.AddServices();
 
+            services.AddCaching();
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
             services.AddDbContext<DataContext>((sp, options) =>
             {

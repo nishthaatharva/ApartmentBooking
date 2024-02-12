@@ -1,4 +1,6 @@
-﻿using ApartmentBooking.Application.Contracts.Identity;
+﻿using ApartmentBooking.Application.Contracts.Application;
+using ApartmentBooking.Application.Contracts.Caching;
+using ApartmentBooking.Application.Contracts.Identity;
 using ApartmentBooking.Application.Contracts.Responses;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Application.Model.Users;
@@ -16,12 +18,19 @@ namespace ApartmentBooking.Identity.Services
         UserManager<ApplicationUser> userManager,
         IConfiguration configuration,
         RoleManager<ApplicationRole> roleManager,
-        AppIdentityDbContext db) : IUsersService
+        AppIdentityDbContext db,
+        ICacheService cache,
+        ICacheKeyService cacheKey,
+        ICurrentUserService currentUserService) : IUsersService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
         private readonly IConfiguration _configuration = configuration;
         private readonly AppIdentityDbContext _db = db;
+        private readonly ICacheService _cache = cache;
+        private readonly ICacheKeyService _cacheKey = cacheKey;
+        private readonly ICurrentUserService _currentUserService = currentUserService;
+
 
         public async Task<ApiResponse<string>> UpdateAsync(UpdateUserDto request)
         {
@@ -114,7 +123,7 @@ namespace ApartmentBooking.Identity.Services
             var usersList = (from u in _db.Users.AsNoTracking()
                              join ur in _db.UserRoles.AsNoTracking() on u.Id equals ur.UserId
                              join r in _db.Roles.AsNoTracking() on ur.RoleId equals r.Id
-                             //filter out current user Id
+                             where u.Id != _currentUserService.UserId
                              select new UserListDto()
                              {
                                  Id = u.Id,
