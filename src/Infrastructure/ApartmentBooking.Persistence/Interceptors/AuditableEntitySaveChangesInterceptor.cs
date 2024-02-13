@@ -4,7 +4,7 @@ using ApartmentBooking.Domain.Common.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace ApartmentBooking.Infrastructure.Interceptors
+namespace ApartmentBooking.Persistence.Interceptors
 {
     public class AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
     {

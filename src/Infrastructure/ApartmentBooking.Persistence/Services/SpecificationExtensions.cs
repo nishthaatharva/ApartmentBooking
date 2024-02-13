@@ -2,7 +2,7 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApartmentBooking.Infrastructure.Services
+namespace ApartmentBooking.Persistence.Services
 {
     public static class SpecificationExtensions
     {
@@ -11,7 +11,7 @@ namespace ApartmentBooking.Infrastructure.Services
         {
             var specificationEvaluator = new SpecificationEvaluator();
             var result = specificationEvaluator.GetQuery(queryable, specification);
-            return await result.ToListAsync<T>();
+            return await result.ToListAsync();
         }
 
         public async static Task<int> ApplySpecificationCount<T>(this IEnumerable<T> source, ISpecification<T> specification)
@@ -29,7 +29,7 @@ namespace ApartmentBooking.Infrastructure.Services
             var queryable = source.AsQueryable();
             var specificationEvaluator = new SpecificationEvaluator();
             var result = specificationEvaluator.GetQuery(queryable, specification);
-            return result.ToList<T>();
+            return result.ToList();
         }
 
         public static int ApplySpecificationToListCount<T>(this IEnumerable<T> source, ISpecification<T> specification)

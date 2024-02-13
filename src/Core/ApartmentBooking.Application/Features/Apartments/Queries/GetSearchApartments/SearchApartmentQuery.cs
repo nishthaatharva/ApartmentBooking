@@ -10,6 +10,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Queries
     public sealed record SearchApartmentQueryRequest : IRequest<IPagedDataResponse<ApartmentListDto>>
     {
         public PaginationFilter PaginationFilter { get; set; } = default!;
+        public List<string> AmenitiesId { get; set; } = default!;
     }
 
     public class GetApartmentRequestSpec : EntitiesByPaginationFilterSpec<ApartmentListDto>
@@ -27,7 +28,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Queries
         {
             var spec = new GetApartmentRequestSpec(request);
 
-            return await _query.ApartmentQuery.SearchAsync(spec, request.PaginationFilter.PageNumber, request.PaginationFilter.PageSize, cancellationToken);
+            return await _query.ApartmentQuery.SearchAsync(spec, request.PaginationFilter.PageNumber, request.PaginationFilter.PageSize, request.AmenitiesId, cancellationToken);
         }
     }
 }

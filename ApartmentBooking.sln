@@ -19,7 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentBooking.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentBooking.API", "src\API\ApartmentBooking.API\ApartmentBooking.API.csproj", "{C2C9AC63-6412-4191-9899-64AEF428510F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentBooking.Identity", "src\Infrastructure\ApartmentBooking.Identity\ApartmentBooking.Identity.csproj", "{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentBooking.Identity", "src\Infrastructure\ApartmentBooking.Identity\ApartmentBooking.Identity.csproj", "{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DDCA9C02-F2A5-4EE9-87A3-7672639B8B66}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentBooking.Persistence", "src\Infrastructure\ApartmentBooking.Persistence\ApartmentBooking.Persistence.csproj", "{8496093F-41F3-4E9F-9975-5989A928397D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +54,10 @@ Global
 		{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8496093F-41F3-4E9F-9975-5989A928397D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8496093F-41F3-4E9F-9975-5989A928397D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8496093F-41F3-4E9F-9975-5989A928397D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8496093F-41F3-4E9F-9975-5989A928397D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +71,7 @@ Global
 		{1CF80ACB-3927-44EA-8197-251EA16939D0} = {0170CC57-428B-4D81-BB46-7D667566917A}
 		{C2C9AC63-6412-4191-9899-64AEF428510F} = {8E87743A-2A42-403D-B4EA-8485BBADDDE5}
 		{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4} = {0170CC57-428B-4D81-BB46-7D667566917A}
+		{8496093F-41F3-4E9F-9975-5989A928397D} = {0170CC57-428B-4D81-BB46-7D667566917A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {196DFB8B-E4FA-41EA-AB3A-D3F687318C3A}

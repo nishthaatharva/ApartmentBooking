@@ -1,10 +1,5 @@
 ﻿using ApartmentBooking.Application.Interfaces;
-using ApartmentBooking.Application.UnitOfWork;
 using ApartmentBooking.Infrastructure.Caching;
-using ApartmentBooking.Infrastructure.Data;
-using ApartmentBooking.Infrastructure.Interceptors;
-using ApartmentBooking.Infrastructure.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,20 +12,6 @@ namespace ApartmentBooking.Infrastructure
             services.AddServices();
 
             services.AddCaching();
-            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-            services.AddDbContext<DataContext>((sp, options) =>
-            {
-                options.AddInterceptors(
-                   sp.GetRequiredService<AuditableEntitySaveChangesInterceptor>()
-               );
-
-                options.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
-            });
-
-            services.AddScoped<ICommandUnitOfWork, CommandUnitOfWork>();
-            services.AddScoped<IQueryUnitOfWork, QueryUnitOfWork>();
-
-
         }
 
         internal static IServiceCollection AddServices(this IServiceCollection services) =>

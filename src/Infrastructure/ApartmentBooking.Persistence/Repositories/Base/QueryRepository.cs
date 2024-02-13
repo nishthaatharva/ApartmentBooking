@@ -1,10 +1,10 @@
 ﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
 using ApartmentBooking.Domain.Common;
-using ApartmentBooking.Infrastructure.Data;
+using ApartmentBooking.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace ApartmentBooking.Infrastructure.Repositories.Base
+namespace ApartmentBooking.Persistence.Repositories.Base
 {
     public class QueryRepository<T>(DataContext context) : IQueryRepository<T> where T : BaseEntity, new()
     {

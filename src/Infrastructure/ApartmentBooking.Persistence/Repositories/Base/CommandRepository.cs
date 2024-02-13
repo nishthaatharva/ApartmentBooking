@@ -1,8 +1,8 @@
 ﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
 using ApartmentBooking.Domain.Common;
-using ApartmentBooking.Infrastructure.Data;
+using ApartmentBooking.Persistence.Data;
 
-namespace ApartmentBooking.Infrastructure.Repositories.Base
+namespace ApartmentBooking.Persistence.Repositories.Base
 {
     public class CommandRepository<T>(DataContext context) : ICommandRepository<T> where T : BaseEntity, new()
     {

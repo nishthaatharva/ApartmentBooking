@@ -6,11 +6,11 @@ namespace ApartmentBooking.Identity.Authorization
     {
         private static readonly Permission[] _all =
         [
-            new("Create User", Action.Create, Resource.Users),
-            new("Update User", Action.Update, Resource.Users),
-            new("Delete User", Action.Delete, Resource.Users),
-            new("View User", Action.View, Resource.Users),
-            new("Search User", Action.Search, Resource.Users),
+            new("Create User", Action.Create, Resource.Users, IsAdmin: true),
+            new("Update User", Action.Update, Resource.Users, IsAdmin: true),
+            new("Delete User", Action.Delete, Resource.Users, IsAdmin: true),
+            new("View User", Action.View, Resource.Users, IsAdmin: true),
+            new("Search User", Action.Search, Resource.Users, IsAdmin: true),
             new("Create Apartment", Action.Create, Resource.Apartment),
             new("Update Apartment", Action.Update, Resource.Apartment),
             new("Delete Apartment", Action.Delete, Resource.Apartment),
@@ -21,7 +21,7 @@ namespace ApartmentBooking.Identity.Authorization
 
         public static IReadOnlyList<Permission> All { get; } = new ReadOnlyCollection<Permission>(_all);
         public static IReadOnlyList<Permission> Root { get; } = new ReadOnlyCollection<Permission>(_all.Where(p => p.IsRoot || p.IsAdmin || p.IsBasic).ToArray());
-        public static IReadOnlyList<Permission> Admin { get; } = new ReadOnlyCollection<Permission>(_all.Where(p => !p.IsRoot).ToArray());
+        public static IReadOnlyList<Permission> Admin { get; } = new ReadOnlyCollection<Permission>(_all.Where(p => p.IsRoot || p.IsAdmin || p.IsBasic).ToArray());
         public static IReadOnlyList<Permission> User { get; } = new ReadOnlyCollection<Permission>(_all.Where(p => p.IsBasic).ToArray());
 
     }

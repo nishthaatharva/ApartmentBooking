@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\Core\ApartmentBooking.Application\ApartmentBooking.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ApartmentBooking.Identity\ApartmentBooking.Identity.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ApartmentBooking.Infrastructure\ApartmentBooking.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ApartmentBooking.Persistence\ApartmentBooking.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

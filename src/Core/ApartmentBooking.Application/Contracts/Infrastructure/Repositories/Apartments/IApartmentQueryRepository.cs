@@ -11,6 +11,7 @@ namespace ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apa
         Task<IPagedDataResponse<ApartmentListDto>> SearchAsync(ISpecification<ApartmentListDto> spec,
                                                             int pageNumber,
                                                             int pageSize,
+                                                            List<string> amenitiesId,
                                                             CancellationToken cancellationToken);
     }
 }

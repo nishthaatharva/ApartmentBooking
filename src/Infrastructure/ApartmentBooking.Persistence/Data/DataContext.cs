@@ -1,16 +1,16 @@
 ﻿using ApartmentBooking.Domain.Common.Contracts;
 using ApartmentBooking.Domain.Entities;
-using ApartmentBooking.Infrastructure.Interceptors;
+using ApartmentBooking.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace ApartmentBooking.Infrastructure.Data
+namespace ApartmentBooking.Persistence.Data
 {
     public class DataContext : DbContext
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
         public DataContext(DbContextOptions<DataContext> options,
-            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options) 
+            AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
         {
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
         }
@@ -35,9 +35,9 @@ namespace ApartmentBooking.Infrastructure.Data
 
             // Seed Amenities data
             modelBuilder.Entity<Amenities>().HasData(
-                new Amenities {Id= new Guid("D0F230C1-A0BD-4085-7239-08DC02176302"),  Name = "Gym" },
-                new Amenities {Id = new Guid("7984DCE3-39A8-4DA3-BFAC-08DC103B5C3F"),  Name = "Pool" },
-                new Amenities {Id = new Guid("70EDB255-7BF7-4597-D02C-08DC10D6610E"),  Name = "Garden" }
+                new Amenities { Id = new Guid("D0F230C1-A0BD-4085-7239-08DC02176302"), Name = "Gym" },
+                new Amenities { Id = new Guid("7984DCE3-39A8-4DA3-BFAC-08DC103B5C3F"), Name = "Pool" },
+                new Amenities { Id = new Guid("70EDB255-7BF7-4597-D02C-08DC10D6610E"), Name = "Garden" }
             );
         }
     }

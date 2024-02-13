@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace ApartmentBooking.Infrastructure.Data
+namespace ApartmentBooking.Persistence.Data
 {
     internal static class ModelBuilderExtensions
     {

@@ -1,8 +1,10 @@
-﻿using ApartmentBooking.API.Services;
+﻿using ApartmentBooking.API.Middlewares;
+using ApartmentBooking.API.Services;
 using ApartmentBooking.Application;
 using ApartmentBooking.Application.Contracts.Application;
 using ApartmentBooking.Identity;
 using ApartmentBooking.Infrastructure;
+using ApartmentBooking.Persistence;
 using Microsoft.OpenApi.Models;
 
 namespace ApartmentBooking.API
@@ -18,8 +20,11 @@ namespace ApartmentBooking.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddPersistence(builder.Configuration);
             builder.Services.AddIdentityService(builder.Configuration);
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
@@ -36,7 +41,10 @@ namespace ApartmentBooking.API
             }
 
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
+
+            app.UseCustomExceptionHandler();
 
             app.UseAuthorization();
 

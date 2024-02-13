@@ -18,6 +18,8 @@ namespace ApartmentBooking.Identity.Data
 
             var initialiser = scope.ServiceProvider.GetRequiredService<AppIdentityDbContextInitialiser>();
 
+            await initialiser.InitialiseAsync();
+
             await initialiser.SeedAsync();
         }
     }
@@ -29,6 +31,40 @@ namespace ApartmentBooking.Identity.Data
         private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
 
         private readonly IConfiguration _configuration = configuration;
+
+        public async Task InitialiseAsync()
+        {
+            var pendingMigrations = await _context.Database.GetPendingMigrationsAsync();
+
+            if (pendingMigrations.Any())
+            {
+                Console.WriteLine("Applying pending migrations:");
+                foreach (var migration in pendingMigrations)
+                {
+                    Console.WriteLine($" - {migration}");
+                }
+
+                try
+                {
+                    await _context.Database.MigrateAsync();
+                    Console.WriteLine("Migrations applied successfully.");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while initialising the database.");
+                    throw;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No pending migrations.");
+            }
+
+            var lastAppliedMigration = (await _context.Database.GetAppliedMigrationsAsync()).Last();
+
+            Console.WriteLine($"You're on schema version: {lastAppliedMigration}");
+        }
+
 
         public async Task SeedAsync()
         {

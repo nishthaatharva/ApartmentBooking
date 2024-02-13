@@ -22,7 +22,7 @@ namespace ApartmentBooking.Identity.Interceptors
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
-        public void UpdateEntities(DbContext? context)
+        private void UpdateEntities(DbContext? context)
         {
             if (context == null) return;
 
