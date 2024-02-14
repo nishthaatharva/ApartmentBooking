@@ -18,6 +18,12 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
             var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, x => x.Id == request.id, x => x.ApartmentAmenitiesAssociations!);
             _ = apartment ?? throw new Exception("Apartment not found");
 
+            //check apartment reservation
+            if(apartment.Status == 2)
+            {
+                throw new Exception("Cannot delete apartment as it is reserved");
+            }
+
             _command.CommandRepository<Apartment>().Remove(apartment);
 
             if(apartment.ApartmentAmenitiesAssociations!.Count > 0)
