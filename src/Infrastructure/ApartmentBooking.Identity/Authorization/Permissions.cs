@@ -11,11 +11,11 @@ namespace ApartmentBooking.Identity.Authorization
             new("Delete User", Action.Delete, Resource.Users, IsAdmin: true),
             new("View User", Action.View, Resource.Users, IsAdmin: true),
             new("Search User", Action.Search, Resource.Users, IsAdmin: true),
-            new("Create Apartment", Action.Create, Resource.Apartment),
-            new("Update Apartment", Action.Update, Resource.Apartment),
-            new("Delete Apartment", Action.Delete, Resource.Apartment),
-            new("View Apartment", Action.View, Resource.Apartment),
-            new("Search Apartment", Action.Search, Resource.Apartment),
+            new("Create Apartment", Action.Create, Resource.Apartment, IsAdmin: true),
+            new("Update Apartment", Action.Update, Resource.Apartment, IsAdmin: true),
+            new("Delete Apartment", Action.Delete, Resource.Apartment, IsAdmin: true),
+            new("View Apartment", Action.View, Resource.Apartment, IsAdmin: true),
+            new("Search Apartment", Action.Search, Resource.Apartment, IsAdmin: true),
             new("Book Apartment", Action.Create, Resource.Booking, IsAdmin: true, IsBasic: true),
         ];
 
