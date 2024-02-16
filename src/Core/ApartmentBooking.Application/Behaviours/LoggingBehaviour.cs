@@ -18,7 +18,7 @@ public class LoggingBehaviour<TRequest, TResponse>(ILogger<LoggingBehaviour<TReq
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             object propvalues = prop.GetValue(request, null);
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-            _logger.LogInformation("{property} : {@Value}", prop.Name, propvalues);
+           // _logger.LogInformation("{property} : {@Value}", prop.Name, propvalues);
         }
 
         var response = await next();
