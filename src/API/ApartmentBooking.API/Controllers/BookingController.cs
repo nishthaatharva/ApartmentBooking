@@ -1,5 +1,7 @@
 ﻿using ApartmentBooking.API.Controllers.Base;
 using ApartmentBooking.Application.Features.Bookings.Commands;
+using ApartmentBooking.Application.Features.Bookings.Dtos;
+using ApartmentBooking.Application.Features.Bookings.Queries;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Identity.Authorization;
 using ApartmentBooking.Identity.Authorization.Permissions;
@@ -29,5 +31,12 @@ public class BookingController : BaseApiController
     public async Task<ApiResponse<string>> CancelLease(CancelLeaseCommand request)
     {
         return await Mediator.Send(request);
+    }
+
+    [HttpGet("{id}")]
+    [MustHavePermission(Action.View, Resource.Booking)]
+    public async Task<ApiResponse<BookingDetailsDto>> GetBookingDetails(Guid id)
+    {
+        return await Mediator.Send(new GetBookingDetailsQuery(id));
     }
 }

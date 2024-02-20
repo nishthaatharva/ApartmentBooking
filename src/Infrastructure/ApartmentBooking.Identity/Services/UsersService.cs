@@ -68,6 +68,16 @@ namespace ApartmentBooking.Identity.Services
             };
         }
 
+        public async Task<string> GetNameOfUser(string userId)
+        {
+            var users = await _userManager.FindByIdAsync(userId);
+            _ = users ?? throw new Exception("User not found");
+
+            string fullName = users.FirstName + " " + users.LastName;
+
+            return fullName;
+        }
+
         public async Task<ApiResponse<string>> DeleteAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
