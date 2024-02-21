@@ -23,52 +23,68 @@ namespace ApartmentBooking.Application.Features.Bookings.Commands
 
         public async Task<ApiResponse<string>> Handle(BookApartmentCommandRequest request, CancellationToken cancellationToken)
         {
-            var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, ap => ap.Id == request.ApartmentId, x => x.ApartmentAmenitiesAssociations!);
-            _ = apartment ?? throw new Exception("No apartment exist");
-
-            if(apartment.Status == 2)
+            try
             {
-                throw new Exception($"{apartment.Name} is already reserved");
-            }
-            else
-            {
-                var booking = _mapper.Map<Booking>(request);
+                // Begin transaction - lock
+                await _command.BeginTransactionAsync();
+                var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, ap => ap.Id == request.ApartmentId, x => x.ApartmentAmenitiesAssociations!);
+                _ = apartment ?? throw new Exception("No apartment exist");
 
-                //lease management
-                if (request.IsOnLease && request.LeaseDuration.HasValue)
+                if (apartment.Status == 2)
                 {
-                    switch (request.LeaseDuration.Value)
-                    {
-                        case 1: // week
-                            booking!.BookTill = request.BookFrom.AddDays(7);
-                            break;
-                        case 2: // month
-                            booking!.BookTill = request.BookFrom.AddMonths(1);
-                            break;
-                        case 3: // year
-                            booking!.BookTill = request.BookFrom.AddYears(1);
-                            break;
-                        default:
-                            throw new Exception("Invalid lease duration selected");
-                    }
+                    throw new Exception($"{apartment.Name} is already reserved");
                 }
-
-                apartment.Status = 2; //reserve
-
-                await _command.CommandRepository<Booking>().AddAsync(booking!);
-                _command.CommandRepository<Apartment>().Update(apartment);
-                var result = await _command.SaveAsync(cancellationToken);
-
-                var response = new ApiResponse<string>
+                else
                 {
-                    Success = result > 0,
-                    StatusCode = result > 0 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.BadRequest,
-                    Data = "Apartment booked successfully",
-                    Message = result > 0 ? "Apartment booked" : "Failed to book apartment"
-                };
+                    var booking = _mapper.Map<Booking>(request);
 
-                return response;
-            }
+                    //lease management
+                    if (request.IsOnLease && request.LeaseDuration.HasValue)
+                    {
+                        booking!.BookTill = request.LeaseDuration.Value switch
+                        {
+                            // week
+                            1 => request.BookFrom.AddDays(7),
+                            // month
+                            2 => request.BookFrom.AddMonths(1),
+                            // year
+                            3 => request.BookFrom.AddYears(1),
+                            _ => throw new Exception("Invalid lease duration selected"),
+                        };
+                    }
+
+                    apartment.Status = 2; //reserve
+
+                    await _command.CommandRepository<Booking>().AddAsync(booking!);
+                    _command.CommandRepository<Apartment>().Update(apartment);
+                    //commit transaction - release lock
+                    await _command.CommitTransactionAsync();
+                    var result = await _command.SaveAsync(cancellationToken);
+
+                    var response = new ApiResponse<string>
+                    {
+                        Success = result > 0,
+                        StatusCode = result > 0 ? (int)HttpStatusCode.OK : (int)HttpStatusCode.BadRequest,
+                        Data = "Apartment booked successfully",
+                        Message = result > 0 ? "Apartment booked" : "Failed to book apartment"
+                    };
+
+                    return response;
+                }
+            }   
+            catch(Exception ex) 
+            { 
+                //release lock and discard changes
+                await _command.RollbackTransactionAsync();
+
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                    Data = "Transaction failed, please try after some time",
+                    Message = $"An error occurred: {ex.Message}"
+                };
+            }           
         }
     }
 }

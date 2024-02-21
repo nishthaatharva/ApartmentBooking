@@ -11,6 +11,7 @@ namespace ApartmentBooking.Persistence.UnitOfWork
     {
         private readonly DataContext _context;
         private Hashtable _repositories;
+       // private TransactionScope _transactionScope;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public CommandUnitOfWork(DataContext context)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -22,6 +23,25 @@ namespace ApartmentBooking.Persistence.UnitOfWork
         {
             var result = await _context.SaveChangesAsync(cancellationToken);
             return result;
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            //_transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            await _context.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            await _context.Database.CommitTransactionAsync();
+            //_transactionScope.Complete();
+            //_transactionScope.Dispose();
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+           await _context.Database.RollbackTransactionAsync();
+            //_transactionScope.Dispose();
         }
 
         public ICommandRepository<TEntity> CommandRepository<TEntity>() where TEntity : BaseEntity, new()

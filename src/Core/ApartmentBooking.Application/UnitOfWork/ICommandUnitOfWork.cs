@@ -7,5 +7,8 @@ namespace ApartmentBooking.Application.UnitOfWork
     {
         Task<int> SaveAsync(CancellationToken cancellationToken);
         ICommandRepository<TEntity> CommandRepository<TEntity>() where TEntity : BaseEntity, new();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }
