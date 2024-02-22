@@ -57,4 +57,11 @@ public class ApartmentController : BaseApiController
     {
         return await Mediator.Send(new GetApartmentDetailsQueryRequest(id));
     }
+
+    [HttpGet("list")]
+    [MustHavePermission(Action.View, Resource.Apartment)]
+    public async Task<ApiResponse<List<ApartmentDetailsDto>>> GetAvailableApartments()
+    {
+        return await Mediator.Send(new GetAvailableApartmentsQuery());
+    }
 }

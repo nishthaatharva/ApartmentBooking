@@ -18,8 +18,10 @@ public class GetBookingDetailsQueryHandler(IQueryUnitOfWork query, IUsersService
     public async Task<ApiResponse<BookingDetailsDto>> Handle(GetBookingDetailsQuery request, CancellationToken cancellationToken)
     {
         var booking = await _query.QueryRepository<Booking>().GetByIdAsync(request.id.ToString(), false);
+        _ = booking ?? throw new Exception("No bookings found");
 
         var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, a => a.Id == booking.ApartmentId, x => x.ApartmentAmenitiesAssociations!);
+        _ = apartment ?? throw new Exception("No apartments found");
 
         var bookingDetails = new BookingDetailsDto
         {
@@ -38,7 +40,8 @@ public class GetBookingDetailsQueryHandler(IQueryUnitOfWork query, IUsersService
 
         if(apartment.ApartmentAmenitiesAssociations != null)
         {
-            bookingDetails.Amenities = apartment.ApartmentAmenitiesAssociations.Select(x => x.AmenitiesId.ToString()).ToList();
+            bookingDetails.Amenities = apartment.ApartmentAmenitiesAssociations.Select(x => x.AmenitiesId).ToList();
+            bookingDetails.AmenitiesName = await _query.AmenitiesQuery.GetAmenitiesName(bookingDetails.Amenities, cancellationToken);
         }
 
         var response = new ApiResponse<BookingDetailsDto>

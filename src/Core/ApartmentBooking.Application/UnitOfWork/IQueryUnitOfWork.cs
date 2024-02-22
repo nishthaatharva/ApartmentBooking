@@ -1,4 +1,5 @@
-﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
+﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories;
+using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
 using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
 using ApartmentBooking.Domain.Common;
 
@@ -9,5 +10,6 @@ namespace ApartmentBooking.Application.UnitOfWork
         IQueryRepository<TEntity> QueryRepository<TEntity>() where TEntity : BaseEntity, new();
 
         IApartmentQueryRepository ApartmentQuery { get; }
+        IAmenitiesQueryRepository AmenitiesQuery { get; }
     }
 }

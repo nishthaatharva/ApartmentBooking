@@ -1,8 +1,10 @@
-﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
+﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories;
+using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
 using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Base;
 using ApartmentBooking.Application.UnitOfWork;
 using ApartmentBooking.Domain.Common;
 using ApartmentBooking.Persistence.Data;
+using ApartmentBooking.Persistence.Repositories.Amenity;
 using ApartmentBooking.Persistence.Repositories.Apartments;
 using ApartmentBooking.Persistence.Repositories.Base;
 using System.Collections;
@@ -42,6 +44,9 @@ namespace ApartmentBooking.Persistence.UnitOfWork
 
         public ApartmentQueryRepository _apartmentRepository;
         public IApartmentQueryRepository ApartmentQuery => _apartmentRepository ?? new ApartmentQueryRepository(_context);
+
+        public AmenitiesQueryRepository _amenitiesRepository;
+        public IAmenitiesQueryRepository AmenitiesQuery => _amenitiesRepository ?? new AmenitiesQueryRepository(_context);
 
         public void Dispose()
         {

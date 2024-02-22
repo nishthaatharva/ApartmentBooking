@@ -9,6 +9,7 @@
         public int Rooms { get; set; }
         public int Status { get; set; }
         public string StatusName { get; set; }
-        public List<string>? ApartmentAmenitiesAssociation { get; set; }
+        public List<Guid>? ApartmentAmenitiesAssociation { get; set; }
+        public List<string>? Amenities { get; set; }
     }
 }

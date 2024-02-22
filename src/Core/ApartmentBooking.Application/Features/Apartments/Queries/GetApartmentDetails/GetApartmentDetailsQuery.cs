@@ -22,7 +22,8 @@ namespace ApartmentBooking.Application.Features.Apartments.Queries
             
             if(apartment.ApartmentAmenitiesAssociations != null)
             {
-                apartmentDto!.ApartmentAmenitiesAssociation = apartment.ApartmentAmenitiesAssociations.Select(x => x.AmenitiesId.ToString()).ToList();
+                apartmentDto!.ApartmentAmenitiesAssociation = apartment.ApartmentAmenitiesAssociations.Select(x => x.AmenitiesId).ToList();
+                apartmentDto.Amenities = await _query.AmenitiesQuery.GetAmenitiesName(apartmentDto.ApartmentAmenitiesAssociation, cancellationToken);
             }
 
             var response = new ApiResponse<ApartmentDetailsDto>

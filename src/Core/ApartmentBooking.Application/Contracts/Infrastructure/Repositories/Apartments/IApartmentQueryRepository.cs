@@ -15,3 +15,4 @@ namespace ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apa
                                                             CancellationToken cancellationToken);
     }
 }
+    
