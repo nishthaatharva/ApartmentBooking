@@ -26,7 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApartmentBooking.Persistence", "src\Infrastructure\ApartmentBooking.Persistence\ApartmentBooking.Persistence.csproj", "{8496093F-41F3-4E9F-9975-5989A928397D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApartmentBooking.Persistence", "src\Infrastructure\ApartmentBooking.Persistence\ApartmentBooking.Persistence.csproj", "{8496093F-41F3-4E9F-9975-5989A928397D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{C8F4CA42-6FD1-4381-B4E2-D53E0C905328}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "aptbooking", "src\Frontend\aptBooking\aptbooking.esproj", "{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +62,12 @@ Global
 		{8496093F-41F3-4E9F-9975-5989A928397D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8496093F-41F3-4E9F-9975-5989A928397D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8496093F-41F3-4E9F-9975-5989A928397D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +82,8 @@ Global
 		{C2C9AC63-6412-4191-9899-64AEF428510F} = {8E87743A-2A42-403D-B4EA-8485BBADDDE5}
 		{7AFC7FBC-E473-4056-893C-CDC96AEB3BC4} = {0170CC57-428B-4D81-BB46-7D667566917A}
 		{8496093F-41F3-4E9F-9975-5989A928397D} = {0170CC57-428B-4D81-BB46-7D667566917A}
+		{C8F4CA42-6FD1-4381-B4E2-D53E0C905328} = {EC5D6807-CDA6-4553-B9C0-242586662C14}
+		{EFDA12FB-2A74-4A01-B525-3FE5A7B88FF9} = {C8F4CA42-6FD1-4381-B4E2-D53E0C905328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {196DFB8B-E4FA-41EA-AB3A-D3F687318C3A}

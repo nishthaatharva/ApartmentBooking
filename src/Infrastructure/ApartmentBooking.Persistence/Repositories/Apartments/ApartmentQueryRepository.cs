@@ -17,7 +17,7 @@ namespace ApartmentBooking.Persistence.Repositories.Apartments
     {
         public ApartmentQueryRepository(DataContext context) : base(context) { }
 
-        public async Task<IPagedDataResponse<ApartmentListDto>> SearchAsync(ISpecification<ApartmentListDto> spec, int pageNumber, int pageSize, List<string> amenitiesId, CancellationToken cancellationToken)
+        public async Task<IPagedDataResponse<ApartmentListDto>> SearchAsync(ISpecification<ApartmentListDto> spec, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var apartmentList = await (from c in _context.Apartments.AsNoTracking().Include(g => g.ApartmentAmenitiesAssociations)
                                 select new ApartmentListDto()
@@ -38,12 +38,12 @@ namespace ApartmentBooking.Persistence.Repositories.Apartments
                                            .Select(a => a.Name).ToList()
                                 }).ToListAsync<ApartmentListDto>(cancellationToken: cancellationToken);
 
-            if(amenitiesId != null && amenitiesId.Any())
-            {
-                apartmentList = apartmentList
-                    .Where(x => x.ApartmentAmenitiesAssociation!.Intersect(amenitiesId).Any())
-                    .ToList();
-            }
+            //if(amenitiesId != null && amenitiesId.Any())
+            //{
+            //    apartmentList = apartmentList
+            //        .Where(x => x.ApartmentAmenitiesAssociation!.Intersect(amenitiesId).Any())
+            //        .ToList();
+            //}
 
             var apartment = apartmentList.ApplySpecification(spec);
             var count = apartmentList.ApplySpecificationToListCount(spec);

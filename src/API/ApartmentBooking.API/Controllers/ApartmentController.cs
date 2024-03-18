@@ -32,7 +32,7 @@ public class ApartmentController : BaseApiController
     [MustHavePermission(Action.Update, Resource.Apartment)]
     public async Task<ApiResponse<string>> UpdateApartment(Guid id, UpdateApartmentCommandRequest request)
     {
-        if (id != request.apartment.Id)
+        if (id != request.Id)
         {
             return new ApiResponse<string>
             {

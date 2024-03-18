@@ -13,6 +13,16 @@ Log.Information("Apartment booking API starting");
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:3000", "http://localhost:5173")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 builder.Host.UseSerilog((context, loggerConfiguration) =>
 {
     loggerConfiguration
@@ -44,6 +54,8 @@ static string GetCallingMethodName()
 var app = builder
     .ConfigureServices()
     .ConfigurePipeline();
+
+app.UseCors();
 
 app.UseSerilogRequestLogging();
 

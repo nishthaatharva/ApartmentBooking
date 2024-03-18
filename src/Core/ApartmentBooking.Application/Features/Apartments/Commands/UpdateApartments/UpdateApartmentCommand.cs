@@ -6,7 +6,16 @@ using System.Net;
 
 namespace ApartmentBooking.Application.Features.Apartments.Commands
 {
-    public record UpdateApartmentCommandRequest(ApartmentDto apartment) : IRequest<ApiResponse<string>>;
+    public record UpdateApartmentCommandRequest : IRequest<ApiResponse<string>>
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public int Size { get; set; }
+        public int Rooms { get; set; }
+        public int Status { get; set; }
+        public List<string>? ApartmentAmenitiesAssociation { get; set; }
+    }
 
     public class UpdateApartmentCommandHandler(ICommandUnitOfWork command, IQueryUnitOfWork query) : IRequestHandler<UpdateApartmentCommandRequest, ApiResponse<string>>
     {
@@ -14,14 +23,14 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
         private readonly IQueryUnitOfWork _query = query;
         public async Task<ApiResponse<string>> Handle(UpdateApartmentCommandRequest request, CancellationToken cancellationToken)
         {
-            var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, ap => ap.Id == request.apartment.Id, x => x.ApartmentAmenitiesAssociations);
+            var apartment = await _query.QueryRepository<Apartment>().GetWithIncludeAsync(false, ap => ap.Id == request.Id, x => x.ApartmentAmenitiesAssociations);
             _ = apartment ?? throw new Exception("Apartment not found");
 
-            apartment.Name = request.apartment.Name;
-            apartment.Location = request.apartment.Location;
-            apartment.Size = request.apartment.Size;
-            apartment.Rooms = request.apartment.Rooms;
-            apartment.Status = request.apartment.Status;
+            apartment.Name = request.Name;
+            apartment.Location = request.Location;
+            apartment.Size = request.Size;
+            apartment.Rooms = request.Rooms;
+            apartment.Status = request.Status;
 
             //update amenities list
             var removeAmenities = new List<ApartmentAmenitiesAssociation>();
@@ -31,7 +40,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
             {
                 foreach(var existingAmenities in apartment.ApartmentAmenitiesAssociations)
                 {
-                    if(!request.apartment.ApartmentAmenitiesAssociation!.Any(a => new Guid(a) == existingAmenities.AmenitiesId))
+                    if(!request.ApartmentAmenitiesAssociation!.Any(a => new Guid(a) == existingAmenities.AmenitiesId))
                     {
                         apartment.ApartmentAmenitiesAssociations.Remove(existingAmenities);
                         removeAmenities.Add(existingAmenities);
@@ -50,7 +59,7 @@ namespace ApartmentBooking.Application.Features.Apartments.Commands
                 apartment.ApartmentAmenitiesAssociations = new List<ApartmentAmenitiesAssociation>();
             }
 
-            foreach(var item in request.apartment.ApartmentAmenitiesAssociation)
+            foreach(var item in request.ApartmentAmenitiesAssociation)
             {
                 if(!apartment.ApartmentAmenitiesAssociations.Any(x => x.AmenitiesId == new Guid(item)))
                 {
