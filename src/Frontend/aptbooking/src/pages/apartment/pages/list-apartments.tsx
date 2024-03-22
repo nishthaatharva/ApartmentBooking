@@ -327,6 +327,14 @@ const Apartments = () => {
                       </button>
                     </Tippy>
                   )}
+                  {userInfo?.roles === "User" && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-sm"
+                    >
+                      Book
+                    </button>
+                  )}
                 </div>
               ),
             },
