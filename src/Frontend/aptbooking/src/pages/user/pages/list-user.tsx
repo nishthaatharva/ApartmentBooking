@@ -17,11 +17,6 @@ import CloseIcon from "../../../components/Shared/Icons/close-icon";
 import LocalStorageService from "../../../utils/localstorage.service";
 
 const Users = () => {
-  //const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(setPageTitle(pageTitle.users));
-  // });
-
   const PAGE_SIZES = dataTableProps.PAGE_SIZES;
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -118,7 +113,7 @@ const Users = () => {
     setManagedUserId(id);
     setTimeout(() => {
       setIsManageUserModal(true);
-    }, 100);
+    }, 500);
   };
 
   const onSaveManageUser = () => {

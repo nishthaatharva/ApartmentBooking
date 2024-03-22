@@ -17,6 +17,12 @@ export const FieldValidation = {
   lastNameMaxLength: 20,
   emailMaxLength: 50,
   passwordMinLength: 6,
+  apartmentNameMaxLength: 20,
+  locationMaxLength: 500,
+  sizeMinLength: 600,
+  sizeMaxLength: 3000,
+  roomsMinLength: 1,
+  roomsMaxLength: 5,
 };
 
 export const NotificationType = {

@@ -6,6 +6,7 @@ const SignIn = lazy(() => import("../pages/auth/pages/sign-in"));
 const Apartments = lazy(
   () => import("../pages/apartment/pages/list-apartments")
 );
+import Error404 from "../components/Error404";
 
 interface Route {
   path: string;
@@ -24,13 +25,21 @@ const authRoutes: Route[] = [
   },
 ];
 
+const errorRoutes: Route[] = [
+  {
+    path: "*",
+    element: <Error404 />,
+    layout: "blank",
+  },
+];
+
 let appRoutes: Route[] = [];
 if (userInfo !== null) {
   if (isAdmin) {
     appRoutes = [
       {
         path: "/",
-        element: <Users />,
+        element: <Apartments />,
         layout: "",
       },
       {
@@ -60,13 +69,6 @@ if (userInfo !== null) {
   }
 }
 
-//Always include apartment route regardless of roles
-// appRoutes.push({
-//   path: "/" + appPaths.apartments,
-//   element: <Apartments />,
-//   layout: "",
-// });
-
-const routes: Route[] = [...authRoutes, ...appRoutes];
+const routes: Route[] = [...authRoutes, ...appRoutes, ...errorRoutes];
 
 export { routes };

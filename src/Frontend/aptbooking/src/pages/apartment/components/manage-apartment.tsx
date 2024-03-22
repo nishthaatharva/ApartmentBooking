@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import messageService from "../../../utils/message.service";
 import { APIs } from "../../../utils/common/api-paths";
 import axiosInstance from "../../../utils/api.service";
-import { FieldValidation, Regex } from "../../../utils/common/constants";
+import { FieldValidation } from "../../../utils/common/constants";
 
 interface ManageApartmentModalProps {
   manageApartmentId: string;
@@ -103,7 +103,40 @@ const ManageApartmentModal: React.FC<ManageApartmentModalProps> = ({
   };
 
   const SubmittedForm = Yup.object().shape({
-   
+    name: Yup.string()
+      .required("Name cannot be empty")
+      .max(
+        FieldValidation.apartmentNameMaxLength,
+        `Name must be at most ${FieldValidation.apartmentNameMaxLength} characters`
+      ),
+    location: Yup.string()
+      .required("Location cannot be empty")
+      .max(
+        FieldValidation.locationMaxLength,
+        `Location must be at most ${FieldValidation.locationMaxLength} characters`
+      ),
+    size: Yup.number()
+      .required("Size cannot be empty")
+      .min(
+        FieldValidation.sizeMinLength,
+        `Size must be at least ${FieldValidation.sizeMinLength} sq ft.`
+      )
+      .max(
+        FieldValidation.sizeMaxLength,
+        `Size must be at most ${FieldValidation.sizeMaxLength} sq ft.`
+      )
+      .integer("Size should be integer only"),
+    rooms: Yup.number()
+      .required("No. Of Rooms cannot be empty")
+      .min(
+        FieldValidation.roomsMinLength,
+        `No. of Rooms must be greater than zero`
+      )
+      .max(
+        FieldValidation.roomsMaxLength,
+        `There must be at most ${FieldValidation.roomsMaxLength} No. of Rooms`
+      )
+      .integer("No. of Rooms must be integer only"),
   });
 
   return (
@@ -186,7 +219,7 @@ const ManageApartmentModal: React.FC<ManageApartmentModalProps> = ({
                                 : ""
                             }
                           >
-                            <label htmlFor="name">Apartment Name</label>
+                            <label htmlFor="name">Name</label>
                             <Field
                               name="name"
                               type="text"
@@ -206,36 +239,39 @@ const ManageApartmentModal: React.FC<ManageApartmentModalProps> = ({
                               ""
                             )}
                           </div>
-                          <div
-                            className={
-                              submitCount
-                                ? errors.location
-                                  ? "has-error"
-                                  : ""
+                        </div>
+
+                        <div
+                          className={
+                            submitCount
+                              ? errors.location
+                                ? "has-error"
                                 : ""
-                            }
-                          >
-                            <label htmlFor="location">Location</label>
-                            <Field
-                              name="location"
-                              type="text"
-                              id="location"
-                              placeholder="Enter Apartment Location"
-                              className="form-input"
-                            />
-                            {submitCount ? (
-                              errors.location ? (
-                                <div className="text-danger mt-1">
-                                  {errors.location}
-                                </div>
-                              ) : (
-                                ""
-                              )
+                              : ""
+                          }
+                        >
+                          <label htmlFor="location">Location</label>
+                          <Field
+                            as="textarea"
+                            name="location"
+                            id="location"
+                            placeholder="Enter Apartment Location"
+                            className="form-input"
+                            rows={4}
+                          />
+                          {submitCount ? (
+                            errors.location ? (
+                              <div className="text-danger mt-1">
+                                {errors.location}
+                              </div>
                             ) : (
                               ""
-                            )}
-                          </div>
+                            )
+                          ) : (
+                            ""
+                          )}
                         </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div
                             className={
@@ -246,7 +282,7 @@ const ManageApartmentModal: React.FC<ManageApartmentModalProps> = ({
                                 : ""
                             }
                           >
-                            <label htmlFor="size">Apartment Size(sq ft.)</label>
+                            <label htmlFor="size">Size (sq ft.)</label>
                             <Field
                               name="size"
                               type="number"
@@ -381,7 +417,7 @@ const ManageApartmentModal: React.FC<ManageApartmentModalProps> = ({
                               }
                             }}
                           >
-                            {manageApartmentId ? "Update" : "Create"}
+                            {manageApartmentId ? "Update" : "Save"}
                           </button>
                         </div>
                       </Form>

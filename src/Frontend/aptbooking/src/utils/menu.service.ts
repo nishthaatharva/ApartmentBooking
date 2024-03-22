@@ -10,12 +10,12 @@ class MenuService {
 
     if (isAdmin) {
       menuItems.push({
-        label: "Users",
-        link: "/" + appPaths.users,
-      });
-      menuItems.push({
         label: "Apartments",
         link: "/" + appPaths.apartments,
+      });
+      menuItems.push({
+        label: "Users",
+        link: "/" + appPaths.users,
       });
     } else {
       menuItems.push({
