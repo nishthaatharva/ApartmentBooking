@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import authService from "../utils/auth.service";
+import { Regex } from "../../../utils/common/constants";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -17,7 +18,10 @@ const SignIn = () => {
   };
 
   const SubmittedForm = Yup.object().shape({
-    email: Yup.string().required("Email can not be empty"),
+    email: Yup.string()
+      .required("Email can not be empty")
+      .email("Invalid email format")
+      .matches(Regex.emailValidationPattern, "Invalid email format"),
     password: Yup.string().required("Password can not be empty"),
   });
 
@@ -25,7 +29,7 @@ const SignIn = () => {
     <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-[url('/assets/images/map.svg')] dark:bg-[url('/assets/images/map-dark.svg')]">
       <div className="panel sm:w-[480px] m-6 max-w-lg w-full">
         <h2 className="font-bold text-2xl mb-3">Sign In</h2>
-        <p className="mb-7">Enter your email and password to login</p>
+        <p className="mb-7">Enter your email and password to sign in</p>
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={SubmittedForm}

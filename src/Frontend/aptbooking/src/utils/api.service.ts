@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor
+// Request interceptor: handles outgoing request
 axiosInstance.interceptors.request.use(
   (config) => {
     if (!isRequestUrlAllowAnonymous(config?.url ?? "")) {
@@ -37,7 +37,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Response interceptor
+// Response interceptor: checks for authentication & refresh token
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
