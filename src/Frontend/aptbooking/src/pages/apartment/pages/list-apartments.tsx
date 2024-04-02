@@ -15,6 +15,7 @@ import { useDebouncedValue } from "@mantine/hooks";
 import messageService from "../../../utils/message.service";
 import ManageApartmentModal from "../components/manage-apartment";
 import LocalStorageService from "../../../utils/localstorage.service";
+import ManageBookingModal from "../components/book-apartment";
 
 const Apartments = () => {
   const PAGE_SIZES = dataTableProps.PAGE_SIZES;
@@ -37,6 +38,7 @@ const Apartments = () => {
   const [managedApartmentId, setManagedApartmentId] = useState<string>("");
   const [isManageApartmentModal, setIsManageApartmentModal] =
     useState<any>(false);
+  const [isManageBookingModal, setIsManageBookingModal] = useState<any>(false);
 
   const localStorageService = LocalStorageService.getService();
   const userInfo = localStorageService.getUser();
@@ -101,6 +103,13 @@ const Apartments = () => {
     }, 500);
   };
 
+  const bookApartmentConfirm = (id: string) => {
+    setManagedApartmentId(id);
+    setTimeout(() => {
+      setIsManageBookingModal(true);
+    }, 500);
+  };
+
   const deleteApartmentConfirm = (id: string) => {
     setdeletedApartmentId(id);
     setIsDeleteApartmentModal(true);
@@ -128,21 +137,23 @@ const Apartments = () => {
     setIsManageApartmentModal(false);
   };
 
+  const onSaveManageBooking = () => {
+    setManagedApartmentId("");
+    bindApartments(params);
+    setIsManageBookingModal(false);
+  };
+
+  const onCloseManageBooking = () => {
+    setManagedApartmentId("");
+    setIsManageBookingModal(false);
+  };
+
   return (
     <div className="panel">
       <div className="flex md:items-center md:flex-row flex-col mb-5 gap-5">
         <h5 className="font-semibold text-lg dark:text-white-light">
           Apartments
         </h5>
-        {/* <div className="ltr:ml-auto rtl:mr-auto">
-          <button
-            type="button"
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => setIsManageApartmentModal(true)}
-          >
-            Add Apartment
-          </button>
-        </div> */}
         {userInfo!.roles === "Administrator" && (
           <div className="ltr:ml-auto rtl:mr-auto">
             <button
@@ -218,34 +229,13 @@ const Apartments = () => {
             {
               accessor: "statusName",
               title: "Status",
-              // filter: (
-              //   <TextInput
-              //     label="Status"
-              //     description="Show apartment whose status include the specified text"
-              //     placeholder="Search status..."
-              //     leftSection={<SearchIcon />}
-              //     rightSection={
-              //       <ActionIcon
-              //         size="sm"
-              //         variant="transparent"
-              //         c="dimmed"
-              //         onClick={() => setEmailFilter("")}
-              //       >
-              //         <CloseIcon size={24} />
-              //       </ActionIcon>
-              //     }
-              //     value={emailFilter}
-              //     onChange={(e) => setEmailFilter(e.currentTarget.value)}
-              //   />
-              // ),
-              // filtering: emailFilter !== "",
               sortable: true,
             },
             {
               accessor: "action",
               title: "Action",
               titleClassName: "!text-center",
-              render: ({ id }) => (
+              render: ({ id, statusName }) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                   {userInfo?.roles === "Administrator" && (
                     <Tippy content="Edit">
@@ -327,12 +317,31 @@ const Apartments = () => {
                       </button>
                     </Tippy>
                   )}
-                  {userInfo?.roles === "User" && (
+                  {/* {userInfo?.roles === "User" && (
                     <button
                       type="button"
                       className="btn btn-outline-primary btn-sm"
+                      onClick={() => bookApartmentConfirm(`${id}`)}
                     >
                       Book
+                    </button>
+                  )} */}
+                  {userInfo?.roles === "User" && statusName !== "Reserved" && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => bookApartmentConfirm(`${id}`)}
+                    >
+                      Book
+                    </button>
+                  )}
+                  {userInfo?.roles === "User" && statusName === "Reserved" && (
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      disabled
+                    >
+                      Booked
                     </button>
                   )}
                 </div>
@@ -368,6 +377,12 @@ const Apartments = () => {
         isOpen={isManageApartmentModal}
         onClose={onCloseManageApartment}
         onSave={onSaveManageApartment}
+      />
+      <ManageBookingModal
+        manageApartmentId={managedApartmentId}
+        isOpen={isManageBookingModal}
+        onClose={onCloseManageBooking}
+        onSave={onSaveManageBooking}
       />
     </div>
   );

@@ -15,5 +15,8 @@ export class APIs {
   static deleteApartmentApi = "/apartment/";
   static getApartmentApi = "/apartment/";
   static addApartment = "/apartment/create";
-  static updateApartment = "/apartment/"
+  static updateApartment = "/apartment/";
+
+  //booking
+  static bookApartmentApi = "/booking/book-apartment";
 }
