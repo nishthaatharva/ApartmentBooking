@@ -11,5 +11,6 @@ namespace ApartmentBooking.Application.UnitOfWork
 
         IApartmentQueryRepository ApartmentQuery { get; }
         IAmenitiesQueryRepository AmenitiesQuery { get; }
+        IBookingQueryRepository BookingQuery { get; }
     }
 }

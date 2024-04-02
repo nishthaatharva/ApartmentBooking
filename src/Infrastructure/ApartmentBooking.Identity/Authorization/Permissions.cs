@@ -17,7 +17,8 @@ namespace ApartmentBooking.Identity.Authorization
             new("View Apartment", Action.View, Resource.Apartment, IsAdmin: true),
             new("Search Apartment", Action.Search, Resource.Apartment, IsAdmin: true),
             new("Book Apartment", Action.Create, Resource.Booking, IsAdmin: true, IsBasic: true),
-            new("View Booking", Action.View, Resource.Booking, IsAdmin: true, IsBasic: true)
+            new("View Booking", Action.View, Resource.Booking, IsAdmin: true, IsBasic: true),
+            new("Search Booking", Action.Search, Resource.Booking, IsAdmin: true, IsBasic: true)
         ];
 
         public static IReadOnlyList<Permission> All { get; } = new ReadOnlyCollection<Permission>(_all);

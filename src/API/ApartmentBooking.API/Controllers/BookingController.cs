@@ -1,4 +1,5 @@
 ﻿using ApartmentBooking.API.Controllers.Base;
+using ApartmentBooking.Application.Contracts.Responses;
 using ApartmentBooking.Application.Features.Bookings.Commands;
 using ApartmentBooking.Application.Features.Bookings.Dtos;
 using ApartmentBooking.Application.Features.Bookings.Queries;
@@ -38,5 +39,12 @@ public class BookingController : BaseApiController
     public async Task<ApiResponse<BookingDetailsDto>> GetBookingDetails(Guid id)
     {
         return await Mediator.Send(new GetBookingDetailsQuery(id));
+    }
+
+    [HttpPost("Search")]
+    [MustHavePermission(Action.Search, Resource.Booking)]
+    public async Task<IPagedDataResponse<BookingListDto>> SearchAsync(GetSearchMyBookingsQuery request)
+    {
+        return await Mediator.Send(request);
     }
 }

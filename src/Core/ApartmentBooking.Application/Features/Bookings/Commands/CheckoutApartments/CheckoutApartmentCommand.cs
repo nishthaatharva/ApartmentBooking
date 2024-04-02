@@ -46,7 +46,7 @@ namespace ApartmentBooking.Application.Features.Bookings.Commands
                     {
                         if (DateTime.UtcNow < booking.BookTill)
                         {
-                            throw new Exception("Please comple your lease duration or cancel lease");
+                            throw new Exception("Please complete your lease duration or cancel lease");
                         }
                         else
                         {
