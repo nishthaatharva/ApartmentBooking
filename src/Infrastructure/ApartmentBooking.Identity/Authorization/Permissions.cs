@@ -14,8 +14,8 @@ namespace ApartmentBooking.Identity.Authorization
             new("Create Apartment", Action.Create, Resource.Apartment, IsAdmin: true),
             new("Update Apartment", Action.Update, Resource.Apartment, IsAdmin: true),
             new("Delete Apartment", Action.Delete, Resource.Apartment, IsAdmin: true),
-            new("View Apartment", Action.View, Resource.Apartment, IsAdmin: true),
-            new("Search Apartment", Action.Search, Resource.Apartment, IsAdmin: true),
+            new("View Apartment", Action.View, Resource.Apartment, IsAdmin: true, IsBasic: true),
+            new("Search Apartment", Action.Search, Resource.Apartment, IsAdmin: true, IsBasic: true),
             new("Book Apartment", Action.Create, Resource.Booking, IsAdmin: true, IsBasic: true),
             new("View Booking", Action.View, Resource.Booking, IsAdmin: true, IsBasic: true),
             new("Search Booking", Action.Search, Resource.Booking, IsAdmin: true, IsBasic: true)

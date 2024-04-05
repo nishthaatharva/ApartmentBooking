@@ -19,4 +19,8 @@ export class APIs {
 
   //booking
   static bookApartmentApi = "/booking/book-apartment";
+  static searchBookingApi = "/booking/search";
+  static getBookingApi = "/booking/";
+  static cancelLeaseApi = "/booking/cancel-lease";
+  static cancelBookingApi = "/booking/checkout-apartment";
 }

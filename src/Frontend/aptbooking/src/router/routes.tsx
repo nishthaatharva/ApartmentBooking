@@ -7,6 +7,7 @@ const Apartments = lazy(
   () => import("../pages/apartment/pages/list-apartments")
 );
 import Error404 from "../components/Error404";
+import Bookings from "../pages/booking/pages/list-booking";
 
 interface Route {
   path: string;
@@ -63,6 +64,11 @@ if (userInfo !== null) {
       {
         path: "/" + appPaths.apartments,
         element: <Apartments />,
+        layout: "",
+      },
+      {
+        path: "/" + appPaths.bookings,
+        element: <Bookings />,
         layout: "",
       },
     ];

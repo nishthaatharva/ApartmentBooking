@@ -5,4 +5,5 @@ export const authPaths = {
 export const appPaths = {
   users: "users",
   apartments: "apartments",
+  bookings: "bookings",
 };

@@ -8,5 +8,6 @@
         public int? LeaseDuration { get; set; } //1.week 2.month 3.year
         public Guid ApartmentId { get; set; }
         public Apartment? Apartment { get; set; }
+        public bool IsBook { get; set; } = true;
     }
 }

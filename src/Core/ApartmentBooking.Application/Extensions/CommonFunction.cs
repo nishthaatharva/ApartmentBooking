@@ -11,5 +11,10 @@ namespace ApartmentBooking.Application.Extensions
 
             return attribute != null ? attribute.Description : status.ToString();
         }
+
+        public static string ConvertDateToStringForDisplay(DateTime date)
+        {
+            return date.ToString("MMM dd, yyyy");
+        }
     }
 }

@@ -6,6 +6,7 @@
         public DateTime BookFrom { get; set; }
         public DateTime BookTill { get; set; }
         public string ApartmentName { get; set; }
+        public Guid ApartmentId { get; set; }
         public List<Guid>? Amenities { get; set; }
         public List<string>? AmenitiesName { get; set; }
         public string BookedBy { get; set; }

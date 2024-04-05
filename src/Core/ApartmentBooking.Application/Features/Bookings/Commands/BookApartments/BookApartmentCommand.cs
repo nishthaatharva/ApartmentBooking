@@ -54,7 +54,7 @@ namespace ApartmentBooking.Application.Features.Bookings.Commands
                     }
 
                     apartment.Status = 2; //reserve
-
+                    
                     await _command.CommandRepository<Booking>().AddAsync(booking!);
                     _command.CommandRepository<Apartment>().Update(apartment);
                     //commit transaction - release lock

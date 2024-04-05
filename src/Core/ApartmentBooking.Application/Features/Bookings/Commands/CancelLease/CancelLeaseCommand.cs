@@ -45,6 +45,7 @@ namespace ApartmentBooking.Application.Features.Bookings.Commands
                     else
                     {
                         apartment.Status = 1;
+                        booking.IsBook = false;
                     }
                 }
 

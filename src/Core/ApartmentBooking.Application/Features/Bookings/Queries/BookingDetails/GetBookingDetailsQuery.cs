@@ -30,6 +30,7 @@ public class GetBookingDetailsQueryHandler(IQueryUnitOfWork query, IUsersService
             BookTill = booking.BookTill,
             IsOnLease = booking.IsOnLease,
             ApartmentName = apartment.Name,
+            ApartmentId = apartment.Id,
             BookedBy = await _usersService.GetNameOfUser(booking.CreatedBy!)
         };
 

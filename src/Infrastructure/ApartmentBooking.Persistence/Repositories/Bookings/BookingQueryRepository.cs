@@ -1,5 +1,6 @@
 ﻿using ApartmentBooking.Application.Contracts.Infrastructure.Repositories.Apartments;
 using ApartmentBooking.Application.Contracts.Responses;
+using ApartmentBooking.Application.Extensions;
 using ApartmentBooking.Application.Features.Bookings.Dtos;
 using ApartmentBooking.Application.Features.Common;
 using ApartmentBooking.Domain.Entities;
@@ -29,6 +30,10 @@ namespace ApartmentBooking.Persistence.Repositories.Bookings
                                          BookTill = b.BookTill,
                                          ApartmentName = a.Name,
                                          IsOnLease = b.IsOnLease,
+                                         IsBook = b.IsBook,
+                                         Status = a.Status,
+                                         BookFromDisplay = CommonFunction.ConvertDateToStringForDisplay(b.BookFrom),
+                                         BookTillDisplay = CommonFunction.ConvertDateToStringForDisplay(b.BookTill),
                                      }).ToListAsync<BookingListDto>(cancellationToken: cancellationToken);
 
             var booking = bookingList.ApplySpecification(spec);

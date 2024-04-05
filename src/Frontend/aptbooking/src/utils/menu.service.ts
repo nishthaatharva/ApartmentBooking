@@ -22,6 +22,10 @@ class MenuService {
         label: "Apartments",
         link: "/" + appPaths.apartments,
       });
+      menuItems.push({
+        label: "Bookings",
+        link: "/" + appPaths.bookings,
+      });
     }
 
     return menuItems;
